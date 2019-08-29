@@ -58,7 +58,7 @@ function killEmulatorProcess(processName) {
  * @param {string} processName The name of the process to attempt to kill.
  */
 function killEmulatorProcessNoPID(processName) {
-    exec("TASKKILL /F /FI \"IMAGENAME eq " + processName + "\"");
+    exec("taskkill /f /fi \"IMAGENAME eq " + processName + "\"");
 }
 
 // Loop over known emulators and kill their processes.
