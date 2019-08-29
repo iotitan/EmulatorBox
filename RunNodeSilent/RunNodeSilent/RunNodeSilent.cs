@@ -1,7 +1,7 @@
 ﻿/**
  * File: RunNodeSilent.cs
  * Author: Matt Jones
- * Date: 28.08.2019
+ * Date: 2019.08.28
  * Desc: A wrapper for Node (JavaScript interpreter) that silently runs scripts (no console window).
  */
 
