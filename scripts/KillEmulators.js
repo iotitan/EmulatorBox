@@ -5,12 +5,9 @@
  * Desc: A script that kills all the emulators running on a Windows system. Currently looks for:
  *       - Dolphin (GameCube)
  *       - Project64 (Nintendo64)
- *       - mupen64plus-ui-console.exe (Nintendo64)
- *       - zsnes (Super Nintendo)
  *       - snes9x (Super Nintendo)
  *       - VisualBoyAdvance.exe (GameBoy & GameBoy Advance)
  *       - fceux.exe (NES)
- *       - nestopia.exe (NES)
  *
  * Run: node ./KillEmulators.js
  */
@@ -21,12 +18,9 @@ const process = require('process');
 const emuProcNames = [
     "Dolphin.exe",
     "Project64_custom.exe",
-    "mupen64plus-ui-console.exe",
-    "zsnesw.exe",
     "snes9x.exe",
     "VisualBoyAdvance.exe",
-    "fceux.exe",
-    "nestopia.exe"
+    "fceux.exe"
 ];
 
 /**
