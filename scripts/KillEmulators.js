@@ -23,7 +23,7 @@ const emuProcNames = [
     "Project64_custom.exe",
     "mupen64plus-ui-console.exe",
     "zsnesw.exe",
-    "snes9x",
+    "snes9x.exe",
     "VirtualBoyAdvance.exe",
     "fceux.exe",
     "nestopia.exe"
