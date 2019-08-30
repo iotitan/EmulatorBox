@@ -8,7 +8,7 @@
  *       - mupen64plus-ui-console.exe (Nintendo64)
  *       - zsnes (Super Nintendo)
  *       - snes9x (Super Nintendo)
- *       - VirtualBoyAdvance.exe (GameBoy & GameBoy Advance)
+ *       - VisualBoyAdvance.exe (GameBoy & GameBoy Advance)
  *       - fceux.exe (NES)
  *       - nestopia.exe (NES)
  *
@@ -24,7 +24,7 @@ const emuProcNames = [
     "mupen64plus-ui-console.exe",
     "zsnesw.exe",
     "snes9x.exe",
-    "VirtualBoyAdvance.exe",
+    "VisualBoyAdvance.exe",
     "fceux.exe",
     "nestopia.exe"
 ];
