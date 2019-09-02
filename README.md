@@ -78,7 +78,16 @@ The following should have all outbound requests blocked:
         C:/emulator_box/EmulatorBox/scripts/KillEmulators.js
         C:/emulator_box/EmulatorBox/scripts/emulator_info.json
     ```
-- Button 2: Power Off
+- Button 2: Reset ES
+ - ```./button_icons/reset.png```
+ -  ```
+    C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
+        node.exe
+        C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js
+        C:/emulator_box/EmulatorBox/scripts/emulator_info.json
+        C:/emulator_box/emulationstation_2.0.1a_win32/emulationstation.exe
+    ```
+- Button 3: Power Off
  - ```./button_icons/zzz.png```
  -  ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
