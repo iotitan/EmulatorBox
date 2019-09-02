@@ -2,26 +2,12 @@
  * File: KillEmulators.js
  * Author: Matt Jones
  * Date: 2019.08.12
- * Desc: A script that kills all the emulators running on a Windows system. Currently looks for:
- *       - Dolphin (GameCube)
- *       - Project64 (Nintendo64)
- *       - snes9x (Super Nintendo)
- *       - VisualBoyAdvance.exe (GameBoy & GameBoy Advance)
- *       - fceux.exe (NES)
- *
- * Run: node ./KillEmulators.js
+ * Desc: A script that kills all the emulators running on a Windows system.
  */
 
 const {exec} = require('child_process');
 const process = require('process');
-
-const emuProcNames = [
-    "Dolphin.exe",
-    "Project64_custom.exe",
-    "snes9x.exe",
-    "VisualBoyAdvance.exe",
-    "fceux.exe"
-];
+const SharedUtils = require('./SharedUtils');
 
 /**
  * Asynchronously kill an emulator process by its process name (Windows specific). This first finds
@@ -55,7 +41,13 @@ function killEmulatorProcessNoPID(processName) {
     exec("taskkill /f /fi \"IMAGENAME eq " + processName + "\"");
 }
 
+// Args are: [0] node.exe, [1] KillEmulators.js, [2] file name
+let emuInfoFile = process.argv[2];
+if (!emuInfoFile) return;
+
+let emuInfo = SharedUtils.getProcessNameList(emuInfoFile);
+
 // Loop over known emulators and kill their processes.
-for (let i = 0; i < emuProcNames.length; i++) {
-    killEmulatorProcessNoPID(emuProcNames[i]);
+for (let i = 0; i < emuInfo.length; i++) {
+    killEmulatorProcessNoPID(emuInfo[i].bin);
 }
