@@ -16,24 +16,7 @@ if (!emuInfoFile || !esFullPath) {
     console.log("    node.exe ./RestartEmulationStation.js <emu_info_file> <full_ES_bin_path>");
     console.log("");
     console.log("    NOTE: Paths require forward slashes ('/' not '\\').");
-}
-
-
-/**
- * Check to see if a process is running.
- * @param {string} processName The name of the process to check.
- * @return {boolean} Whether the process is running.
- */
-function checkProcessRunning(processName) {
-    // List tasks without column headers (/nh), in CSV format (/fo "csv"), with the specified
-    // image name (/fi "IMAGENAME eq emu.exe").
-    let out = execSync("tasklist /nh /fo \"csv\" /fi \"IMAGENAME eq " + processName + "\"");
-    let outSplit = out.toString().split(",");
-
-    // The first item in the csv is always the process name. If the process wasn't
-    // found, do nothing. Remove the quotes from the output and check the name if it's
-    // there.
-    return outSplit.length >= 1 && outSplit[0].substr(1, outSplit[0].length - 2) == processName;
+    return;
 }
 
 let emuInfo = SharedUtils.getProcessNameList(emuInfoFile);
@@ -41,7 +24,7 @@ let killOk = true;
 
 // Loop over known emulators and kill their processes.
 for (let i = 0; i < emuInfo.length; i++) {
-    if (checkProcessRunning(emuInfo[i].bin)) {
+    if (SharedUtils.checkProcessRunning(emuInfo[i].bin)) {
         killOk = false;
         break;
     }

@@ -13,6 +13,7 @@ let emuInfoFile = process.argv[2];
 if (!emuInfoFile) {
     console.log("usage: ");
     console.log("    node.exe ./KillEmulators.js <emu_info_file>");
+    return;
 }
 
 /**
@@ -22,10 +23,6 @@ if (!emuInfoFile) {
 function killEmulatorProcessNoPID(processName) {
     exec("taskkill /f /fi \"IMAGENAME eq " + processName + "\"");
 }
-
-// Args are: [0] node.exe, [1] KillEmulators.js, [2] file name
-let emuInfoFile = process.argv[2];
-if (!emuInfoFile) return;
 
 let emuInfo = SharedUtils.getProcessNameList(emuInfoFile);
 
