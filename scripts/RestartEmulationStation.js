@@ -23,7 +23,6 @@ let killOk = true;
 // Loop over known emulators to check if they are running.
 for (let i = 0; i < emuInfo.length; i++) {
     if (SharedUtils.checkProcessRunning(emuInfo[i]["bin"])) {
-        console.log("running " + emuInfo[i]["bin"]);
         killOk = false;
         break;
     }
