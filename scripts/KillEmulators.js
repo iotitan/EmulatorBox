@@ -24,9 +24,9 @@ function killEmulatorProcessNoPID(processName) {
     exec("taskkill /f /fi \"IMAGENAME eq " + processName + "\"");
 }
 
-let emuInfo = SharedUtils.getProcessNameList(emuInfoFile);
+let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 
 // Loop over known emulators and kill their processes.
 for (let i = 0; i < emuInfo.length; i++) {
-    killEmulatorProcessNoPID(emuInfo[i].bin);
+    killEmulatorProcessNoPID(emuInfo[i]["bin"]);
 }

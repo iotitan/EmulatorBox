@@ -10,21 +10,20 @@ const process = require('process');
 const SharedUtils = require('./SharedUtils');
 
 let emuInfoFile = process.argv[2];
-let esFullPath = process.argv[3];
-if (!emuInfoFile || !esFullPath) {
+let uiInfoFile = process.argv[3];
+if (!emuInfoFile || !uiInfoFile) {
     console.log("usage: ");
-    console.log("    node.exe ./RestartEmulationStation.js <emu_info_file> <full_ES_bin_path>");
-    console.log("");
-    console.log("    NOTE: Paths require forward slashes ('/' not '\\').");
+    console.log("    node.exe ./RestartEmulationStation.js <emu_info_file> <ui_sys_info_file>");
     return;
 }
 
-let emuInfo = SharedUtils.getProcessNameList(emuInfoFile);
+let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 let killOk = true;
 
 // Loop over known emulators and kill their processes.
 for (let i = 0; i < emuInfo.length; i++) {
-    if (SharedUtils.checkProcessRunning(emuInfo[i].bin)) {
+    if (SharedUtils.checkProcessRunning(emuInfo[i]["bin"])) {
+        console.log("running " + emuInfo[i]["bin"]);
         killOk = false;
         break;
     }
@@ -32,9 +31,9 @@ for (let i = 0; i < emuInfo.length; i++) {
 
 // If nothing was running restart Emulation Station.
 if (killOk) {
-    let pathComponents = esFullPath.split('/');
-    let esExeName = pathComponents[pathComponents.length - 1];
+    let uiSysInfo = SharedUtils.getJsonFromFile(uiInfoFile);
+    let esInfo = SharedUtils.getEntryForType(uiSysInfo, "EmulationStation");
 
-    execSync("taskkill /f /fi \"IMAGENAME eq " + esExeName + "\"");
-    execSync("start " + esFullPath);
+    execSync("taskkill /f /fi \"IMAGENAME eq " + esInfo["bin"] + "\"");
+    execSync("start " + esInfo["path"] + esInfo["bin"]);
 }
