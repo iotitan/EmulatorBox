@@ -1,0 +1,12 @@
+[
+    {
+        "type": "EmulationStation",
+        "location": "C:/emulator_box/emulationstation_2.0.1a_win32/",
+        "bin": "emulationstation.exe"
+    },
+    {
+        "type": "Steam",
+        "location": "C:/Program Files (x86)/Steam/",
+        "bin": "Steam.exe"
+    }
+]
