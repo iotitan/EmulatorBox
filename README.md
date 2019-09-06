@@ -45,8 +45,8 @@ The config files in the repo are setup to work on the following directory struct
       for any emulators in this directory.
 
 ## Project Directories
-- ```./button_icons/```
-  - Icons for the Stream Deck buttons.
+- ```./assets/```
+  - Image assets for any of the sub-projects that need time (ex. app and Stream Deck icons).
 - ```./configs/```
   - Configuration files for any of the base software that needs it.
   - Emulators have configs set up for xBox controllers.
@@ -71,7 +71,7 @@ The following should have all outbound requests blocked:
 
 #### Stream Deck
 - Button 1: Home
- - ```./button_icons/house.png```
+ - ```./assets/button_icons/house.png```
  -  ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
@@ -79,7 +79,7 @@ The following should have all outbound requests blocked:
         C:/emulator_box/EmulatorBox/scripts/emulator_info.json
     ```
 - Button 2: Reset ES
- - ```./button_icons/emulationstation.png```
+ - ```./assets/button_icons/emulationstation.png```
  -  ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
@@ -88,7 +88,7 @@ The following should have all outbound requests blocked:
         C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
     ```
 - Button 3: Power Off
- - ```./button_icons/zzz.png```
+ - ```./assets/button_icons/zzz.png```
  -  ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
