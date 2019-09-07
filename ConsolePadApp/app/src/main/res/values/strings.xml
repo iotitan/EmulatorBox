@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Console Pad</string>
+
+    <string name="button_home">Home</string>
+    <string name="button_emulationstation">Emulation Station</string>
+    <string name="button_steam">Steam</string>
+    <string name="button_power_off">Power Off</string>
+</resources>
