@@ -124,9 +124,12 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
             // Now wait for a response.
             String data = null;
             ArrayList<String> finalResponseComponents = new ArrayList<>();
-            DatagramPacket receivedPacket =
-                    new DatagramPacket(new byte[MAX_PACKET_SIZE], MAX_PACKET_SIZE);
+            byte[] sharedPacketBuffer = new byte[MAX_PACKET_SIZE];
+            DatagramPacket receivedPacket = new DatagramPacket(sharedPacketBuffer, MAX_PACKET_SIZE);
             while (true) {
+                // Clean out the shared buffer.
+                for (int i = 0; i < sharedPacketBuffer.length; i++) sharedPacketBuffer[i] = 0;
+
                 mSocket.receive(receivedPacket);
 
                 // Test if the response is an echo from broadcast.

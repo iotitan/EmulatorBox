@@ -17,7 +17,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Base64;
 
 public class MainActivity extends Activity implements UdpNetworkTask.ResponseHandler {
     /** Information representing a button in the app. */
@@ -107,9 +109,15 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
             });
             return;
         }
+
+        // Decode the message. The message is always the last component of the data.
+        byte[] decodedMessage =
+                Base64.getDecoder().decode(messageParts.get(messageParts.size() - 1));
+        String decodedMessageString = new String(decodedMessage, Charset.forName("UTF8"));
+
         runOnUiThread(() -> {
-            Toast.makeText(
-                    this, messageParts.get(messageParts.size() - 1), Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this, decodedMessageString, Toast.LENGTH_LONG).show();
         });
     }
 }
