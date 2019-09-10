@@ -2,7 +2,17 @@
  * File: ConsoleUDPResponder.cs
  * Author: Matt Jones
  * Date: 2019.09.03
- * Desc: Respond to UDP connections with information about the console (name, IP, etc.).
+ * Desc: Respond to UDP connections with information about the console (name, IP, etc.). This
+ *       system is built single-threaded, so it only handles one request at a time, which should
+ *       be plenty for this use case.
+ *       
+ *       Message format:
+ *       
+ *       magic_string|current_time_ms|machine_name|base_64_message
+ *       
+ *       Example:
+ *       
+ *       !!ConsoleMessage:|1567889516854|TVBox|SW5mbw==|
  */
 
 using System;
@@ -12,13 +22,33 @@ using System.Text;
 
 namespace ConsoleUDPResponder {
     static class ConsoleUDPResponder {
+        /** The default port to send and recieve messages on. */
+        private static readonly int DEFAULT_PORT = 19002;
 
-        private static readonly String MAGIC_PREFIX = "!ConsoleInfo:";
-        private static readonly String SEPARATOR = "|";
+        // Different actions this host knows how to handle.
+        private static readonly String ACTION_INFO = "Info";
+        private static readonly String ACTION_POWER_OFF = "PowerOff";
+        private static readonly String ACTION_EMULATION_STATION = "RestartEmulationStation";
+        private static readonly String ACTION_STEAM = "RestartSteamBP";
+        private static readonly String ACTION_HOME = "KillEmulators";
+
+        private static readonly String RESPONSE_OK = "OK";
+
+        /** The allowed latency for a message to be considered valid by the system. */
+        private static readonly long VALID_MESSAGE_LATENCY_MS = 3000;
+
+        /** A magic string to identify messages using this simple protocol. */
+        private static readonly String MAGIC_PREFIX = "!!ConsoleMessage:";
+
+        /** A delimited for individual message parts. */
+        private static readonly char SEPARATOR = '|';
+
+        /** The start time for many systems counting MS. */
+        private static readonly DateTime EPOCH_1970 = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         [STAThread]
         static void Main(String[] args) {
-            int port = 19002;
+            int port = DEFAULT_PORT;
             if (args.Length > 0) port = Int32.Parse(args[0]);
 
             UdpClient socket = new UdpClient(port);
@@ -26,16 +56,70 @@ namespace ConsoleUDPResponder {
             // This object will be populated with the sender's info when a connection is established.
             IPEndPoint senderInfo = new IPEndPoint(IPAddress.Any, 0);
 
+            IPAddress[] localAddresses = Dns.GetHostAddresses(Dns.GetHostName());
+
             // Keep listening for incoming info requests until the machine turns off.
             while (true) {
-                String broadcastData = Encoding.UTF8.GetString(socket.Receive(ref senderInfo));
+                String incomingMessage = Encoding.UTF8.GetString(socket.Receive(ref senderInfo));
+                String response = handleMessage(incomingMessage);
 
-                byte[] responseBytes = Encoding.UTF8.GetBytes(
-                        MAGIC_PREFIX + SEPARATOR + Environment.MachineName + SEPARATOR);
-
-                socket.Send(responseBytes, responseBytes.Length, new IPEndPoint(senderInfo.Address, 19003));
+                if (response != null) {
+                    byte[] responseBytes = buildMessage(response);
+                    socket.Send(responseBytes, responseBytes.Length,
+                            new IPEndPoint(senderInfo.Address, port));
+                }
 
             }
+        }
+
+        /** @return The current time in ms since 1970/01/01. */
+        private static long getCurrentTimeMs() {
+            return (long) Math.Floor((DateTime.UtcNow - EPOCH_1970).TotalMilliseconds);
+        }
+
+        /**
+         * Build a new message to send over the network.
+         * @param message The message to append. This will be converted to a base 64 string.
+         * @return The message in bytes.
+         */
+        private static byte[] buildMessage(String message) {
+            StringBuilder builder = new StringBuilder();
+            builder.Append(MAGIC_PREFIX);
+            builder.Append(SEPARATOR);
+            builder.Append(getCurrentTimeMs());
+            builder.Append(SEPARATOR);
+            builder.Append(Environment.MachineName);
+            builder.Append(SEPARATOR);
+            builder.Append(Convert.ToBase64String(Encoding.UTF8.GetBytes(message)));
+            builder.Append(SEPARATOR);
+            return Encoding.UTF8.GetBytes(builder.ToString());
+        }
+
+        /**
+         * Parse a message if it is valid.
+         * @param message The message being parsed.
+         * @param A response to send back if any.
+         */
+        private static string handleMessage(String message) {
+            String[] parts = message.Split(SEPARATOR);
+
+            // Make sure the message is intended for this system.
+            if (!MAGIC_PREFIX.Equals(parts[0])) return null;
+
+            // Make sure we're not getting an old message.
+            try {
+                long remoteTime = long.Parse(parts[1]);
+                long curTime = getCurrentTimeMs();
+                long timeDiff = getCurrentTimeMs() - long.Parse(parts[1]);
+                if (timeDiff > Math.Abs(VALID_MESSAGE_LATENCY_MS)) return null;
+            } catch (Exception) {
+                // If we failed to parse the time piece of the message, do nothing.
+                return null;
+            }
+
+            // Do nothing with machine name and IP.
+
+            return RESPONSE_OK;
         }
     }
 }
