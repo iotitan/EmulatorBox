@@ -5,7 +5,6 @@
  * Desc: A view that shifts color when pressed and held until the action is performed.
  */
 
-
 package zone.mattjones.consolepad;
 
 import android.animation.Animator;
@@ -48,7 +47,7 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
         public void onAnimationEnd(Animator animator) {
             cleanupAnimation();
             if (mIsCanceled) return;
-            // Perform button action here.
+            if (mClickListener != null) mClickListener.onClick(LongPressButton.this);
         }
 
         @Override
@@ -84,6 +83,9 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
     /** The initial color of the text for this button. */
     private int mStartTextColor;
 
+    /** The action triggered after the button is held for long enough. */
+    private OnClickListener mClickListener;
+
     /** Default constructor for use in XML. */
     public LongPressButton(Context context, AttributeSet atts) {
         super(context, atts);
@@ -104,6 +106,12 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
             setBackgroundColor(interpolateColor(mStartBackgroundColor, mTargetBackgroundColor, v));
             mLabelView.setTextColor(interpolateColor(mStartTextColor, mTargetTextColor, v));
         };
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+        // Don't set the normal click listener on this view by calling super.
+        mClickListener = l;
     }
 
     /**

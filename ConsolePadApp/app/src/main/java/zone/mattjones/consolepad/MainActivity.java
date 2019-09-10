@@ -15,10 +15,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements UdpNetworkTask.ResponseHandler {
     /** Information representing a button in the app. */
     public static class ConsoleButtonInfo {
         /** The resource ID of the image to use for the button icon. */
@@ -34,6 +35,9 @@ public class MainActivity extends Activity {
             this.actionId = actionId;
         }
     }
+
+    /** The current network task. */
+    private UdpNetworkTask mCurrentNetTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +93,23 @@ public class MainActivity extends Activity {
      * @param clickedItem The item that was clicked.
      */
     private void handleButtonClick(ConsoleButtonInfo clickedItem) {
+        UdpNetworkTask task =
+                new UdpNetworkTask(this, UdpNetworkTask.BROADCAST_IP, UdpNetworkTask.ACTION_INFO);
+        task.execute();
+    }
 
+    @Override
+    public void handleResponse(ArrayList<String> messageParts, boolean error, boolean timedOut) {
+        mCurrentNetTask = null;
+        if (error) {
+            runOnUiThread(() -> {
+                Toast.makeText(this, R.string.generic_console_error, Toast.LENGTH_LONG).show();
+            });
+            return;
+        }
+        runOnUiThread(() -> {
+            Toast.makeText(
+                    this, messageParts.get(messageParts.size() - 1), Toast.LENGTH_LONG).show();
+        });
     }
 }

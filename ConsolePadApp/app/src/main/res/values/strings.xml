@@ -5,4 +5,6 @@
     <string name="button_emulationstation">Emulation Station</string>
     <string name="button_steam">Steam</string>
     <string name="button_power_off">Power Off</string>
+
+    <string name="generic_console_error">Console did not respond!</string>
 </resources>
