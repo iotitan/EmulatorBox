@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#502979</color>
     <color name="colorAccent">#D81B60</color>
     <color name="icon_color">#bfbfbf</color>
+    <color name="connection_status_none_color">#bfbfbf</color>
 </resources>

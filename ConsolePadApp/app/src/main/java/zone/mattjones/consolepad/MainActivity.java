@@ -41,6 +41,12 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
     /** The current network task. */
     private UdpNetworkTask mCurrentNetTask;
 
+    /** The IP of the console. */
+    private String mConsoleIp;
+
+    /** The name of the console we are currently connected to. */
+    private String mConnectedConsoleName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,15 +54,19 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
 
         final ArrayList<ConsoleButtonInfo> actionItems = new ArrayList<>();
         actionItems.add(new ConsoleButtonInfo(
-                R.drawable.house, R.string.button_home, "KillEmulators"));
+                R.drawable.house, R.string.button_home, UdpNetworkTask.ACTION_HOME));
         actionItems.add(new ConsoleButtonInfo(
                 R.drawable.emulationstation, R.string.button_emulationstation,
-                "RestartEmulationStation"));
+                UdpNetworkTask.ACTION_EMULATION_STATION));
         actionItems.add(new ConsoleButtonInfo(
-                R.drawable.steam, R.string.button_steam, "RestartSteamBP"));
+                R.drawable.steam, R.string.button_steam, UdpNetworkTask.ACTION_STEAM));
         actionItems.add(new ConsoleButtonInfo(
-                R.drawable.zzz, R.string.button_power_off, "PowerOff"));
+                R.drawable.zzz, R.string.button_power_off, UdpNetworkTask.ACTION_POWER_OFF));
 
+        // Allow tapping on the status to make an info request and "connect".
+        findViewById(R.id.connection_status).setOnClickListener((v) -> {
+            handleButtonClick(new ConsoleButtonInfo(0, 0, UdpNetworkTask.ACTION_INFO));
+        });
 
         ListView actionList = (ListView) findViewById(R.id.action_list);
         actionList.setAdapter(new BaseAdapter() {
@@ -95,17 +105,23 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
      * @param clickedItem The item that was clicked.
      */
     private void handleButtonClick(ConsoleButtonInfo clickedItem) {
-        UdpNetworkTask task =
-                new UdpNetworkTask(this, UdpNetworkTask.BROADCAST_IP, UdpNetworkTask.ACTION_INFO);
+        String ip = mConsoleIp == null ? UdpNetworkTask.BROADCAST_IP : mConsoleIp;
+        UdpNetworkTask task = new UdpNetworkTask(this, ip, clickedItem.actionId);
         task.execute();
     }
 
     @Override
-    public void handleResponse(ArrayList<String> messageParts, boolean error, boolean timedOut) {
+    public void handleResponse(
+            ArrayList<String> messageParts, boolean error, boolean timedOut, String remoteIp) {
         mCurrentNetTask = null;
+
+        // If there was an error, reset the connection info.
         if (error) {
+            mConnectedConsoleName = null;
+            mConsoleIp = null;
             runOnUiThread(() -> {
                 Toast.makeText(this, R.string.generic_console_error, Toast.LENGTH_LONG).show();
+                updateConnectionStatusUi();
             });
             return;
         }
@@ -115,9 +131,29 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
                 Base64.getDecoder().decode(messageParts.get(messageParts.size() - 1));
         String decodedMessageString = new String(decodedMessage, Charset.forName("UTF8"));
 
-        runOnUiThread(() -> {
+        if (mConsoleIp == null) {
+            mConsoleIp = remoteIp;
+            mConnectedConsoleName = messageParts.get(2);
+            runOnUiThread(() -> {
+                updateConnectionStatusUi();
+            });
+        }
+    }
 
-            Toast.makeText(this, decodedMessageString, Toast.LENGTH_LONG).show();
-        });
+    /**
+     * Update the piece of UI that shows the status of the connection between the app and the
+     * console.
+     */
+    private void updateConnectionStatusUi() {
+        TextView status = (TextView) findViewById(R.id.connection_status);
+        if (mConnectedConsoleName == null) {
+            status.setText(R.string.connection_status_none);
+            status.setTextColor(
+                    getResources().getColor(R.color.connection_status_none_color, null));
+        } else {
+            String base = getResources().getString(R.string.connection_status_connected);
+            status.setText(base + " " + mConnectedConsoleName);
+            status.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+        }
     }
 }

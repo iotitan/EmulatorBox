@@ -7,4 +7,7 @@
     <string name="button_power_off">Power Off</string>
 
     <string name="generic_console_error">Console did not respond!</string>
+
+    <string name="connection_status_none">Not connected</string>
+    <string name="connection_status_connected">Connected to</string>
 </resources>

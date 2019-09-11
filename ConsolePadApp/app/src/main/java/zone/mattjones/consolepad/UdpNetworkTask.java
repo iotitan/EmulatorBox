@@ -33,8 +33,10 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
          *                     components.
          * @param error Whether there was an error with the response.
          * @param timedOut Whether the socket timed out waiting for a valid response.
+         * @param remoteIp The IP address of the host console.
          */
-        void handleResponse(ArrayList<String> messageParts, boolean error, boolean timedOut);
+        void handleResponse(
+                ArrayList<String> messageParts, boolean error, boolean timedOut, String remoteIp);
     }
 
     /** The default port to send and receive messages on. */
@@ -164,16 +166,17 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
                 break;
             }
 
-            mHandler.handleResponse(finalResponseComponents, false, false);
+            mHandler.handleResponse(finalResponseComponents, false, false,
+                    receivedPacket.getAddress().getHostAddress());
 
         } catch (SocketException se) {
-            mHandler.handleResponse(null, true, false);
+            mHandler.handleResponse(null, true, false, null);
         } catch (UnknownHostException ue) {
-            mHandler.handleResponse(null, true, false);
+            mHandler.handleResponse(null, true, false, null);
         } catch (SocketTimeoutException se) {
-            mHandler.handleResponse(null, true, true);
+            mHandler.handleResponse(null, true, true, null);
         } catch (IOException ie) {
-            mHandler.handleResponse(null, true, false);
+            mHandler.handleResponse(null, true, false, null);
         }
 
         if (mSocket != null) {

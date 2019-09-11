@@ -5,4 +5,5 @@
     <dimen name="button_icon_height">56dp</dimen>
     <dimen name="button_padding">16dp</dimen>
     <dimen name="button_font_size">18sp</dimen>
+    <dimen name="connection_status_text_size">12sp</dimen>
 </resources>
