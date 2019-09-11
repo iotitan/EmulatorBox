@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -117,9 +118,44 @@ namespace ConsoleUDPResponder {
                 return null;
             }
 
-            // Do nothing with machine name and IP.
+            String decodedAction = Encoding.UTF8.GetString(Convert.FromBase64String(parts[3]));
+            if (ACTION_HOME.Equals(decodedAction)) {
+                runScript("node.exe "
+                    + "C:/emulator_box/EmulatorBox/scripts/KillEmulators.js "
+                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json");
+            } else if (ACTION_EMULATION_STATION.Equals(decodedAction)) {
+                runScript("node.exe "
+                    + "C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js "
+                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
+                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
+            } else if (ACTION_STEAM.Equals(decodedAction)) {
+                runScript("node.exe "
+                    + "C:/emulator_box/EmulatorBox/scripts/RestartSteamBP.js "
+                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
+                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
+            } else if (ACTION_POWER_OFF.Equals(decodedAction)) {
+                runScript("node.exe "
+                    + "C:/emulator_box/EmulatorBox/scripts/PowerOff.js");
+            } else if (ACTION_INFO.Equals(decodedAction)) {
+                // Intentionally do nothing for this command.
+            }
 
             return RESPONSE_OK;
+        }
+
+        /**
+         * Run a script via RunProgramSilent.exe.
+         * @param args The arguments to pass to the script runner.
+         */
+        private static void runScript(String args) {
+            ProcessStartInfo info = new ProcessStartInfo();
+            info.FileName = "C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe";
+            info.WindowStyle = ProcessWindowStyle.Hidden;
+            info.Arguments = args;
+
+            Process nodeProcess = new Process();
+            nodeProcess.StartInfo = info;
+            nodeProcess.Start();
         }
     }
 }
