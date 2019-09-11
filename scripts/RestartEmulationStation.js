@@ -34,5 +34,5 @@ if (killOk) {
     let esInfo = SharedUtils.getEntryForType(uiSysInfo, "EmulationStation");
 
     execSync("taskkill /f /fi \"IMAGENAME eq " + esInfo["bin"] + "\"");
-    execSync("start " + esInfo["path"] + esInfo["bin"]);
+    execSync("start \"\" \"" + esInfo["location"] + esInfo["bin"] + "\"");
 }

@@ -41,5 +41,5 @@ if (killOk) {
     let steamInfo = SharedUtils.getEntryForType(uiSysInfo, "Steam");
 
     execSync("taskkill /f /fi \"IMAGENAME eq " + steamInfo["bin"] + "\"");
-    execSync("start " + steamInfo["path"] + steamInfo["bin"] + " -bigpicture");
+    execSync("start \"\" \"" + steamInfo["location"] + steamInfo["bin"] + "\" -bigpicture");
 }
