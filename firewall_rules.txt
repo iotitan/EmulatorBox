@@ -1,3 +1,0 @@
-Block all outbound:
-    Stream Deck updater:
-        %ProgramFiles%\Elgato\StreamDeck\StreamDeck.exe
