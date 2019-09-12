@@ -51,6 +51,14 @@ The config files in the repo are setup to work on the following directory struct
   - Configuration files for any of the base software that needs it.
   - Emulators have configs set up for xBox controllers.
   - Emulation Station is configured to work on the directory structure listed above.
+- ```./ConsolePadApp/```
+  - An Android app used with the ```ConsoleUDPResponder``` to perform the same actions as the
+    Stream Deck but from your phone or device.
+  - Automatically detects the console if the ```ConsoleUDPResponder``` is running.
+- ```./ConsoleUDPResponder/```
+  - The host software that executes commands issued by the ```Console Pad``` app.
+  - This should be set to start when Windows starts.
+  - **All actions performed by this software assume the directory structure listed above.**
 - ```./EmulationStation_theme/```
   - A thin version of the stock "simple" theme that ships with Emulation Station (only includes the
     emulators that are actually used).
@@ -64,33 +72,50 @@ The config files in the repo are setup to work on the following directory struct
 - ```./system_wallpaper.png```
   - A basic wallpaper to show on system startup and desktop while things are loading.
 
-#### Firewall
-The following should have all outbound requests blocked:
-- **Stream Deck updater**: %ProgramFiles%\Elgato\StreamDeck\StreamDeck.exe
-  - This is to prevent the UI from popping up a notification for updating the software.
+## Setup
+
+#### Startup
+Create shortcuts to both the **Emulation Station** and **ConsoleUDPResponder** and put them in the
+startup directory for windows.
 
 #### Stream Deck
 - Button 1: Home
- - ```./assets/button_icons/house.png```
- -  ```
+  - ```./assets/button_icons/house.png```
+  - ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/KillEmulators.js
         C:/emulator_box/EmulatorBox/scripts/emulator_info.json
     ```
-- Button 2: Reset ES
- - ```./assets/button_icons/emulationstation.png```
- -  ```
+- Button 2: Emulators
+  - Start or restart Emulation Station.
+  - ```./assets/button_icons/emulationstation.png```
+  - ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js
         C:/emulator_box/EmulatorBox/scripts/emulator_info.json
         C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
     ```
-- Button 3: Power Off
- - ```./assets/button_icons/zzz.png```
- -  ```
+- Button 3: Steam
+  - Start or restart Steam in big-picture mode.
+  - ```./assets/button_icons/steam.png```
+  - ```
+    C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
+        node.exe
+        C:/emulator_box/EmulatorBox/scripts/RestartSteamBP.js
+        C:/emulator_box/EmulatorBox/scripts/emulator_info.json
+        C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
+    ```
+- Button 4: Power Off
+  - ```./assets/button_icons/zzz.png```
+  - ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/PowerOff.js
     ```
+
+#### Firewall (optional)
+The following should have all outbound requests blocked:
+- **Stream Deck updater**: %ProgramFiles%\Elgato\StreamDeck\StreamDeck.exe
+  - This is to prevent the UI from popping up a notification for updating the software.
