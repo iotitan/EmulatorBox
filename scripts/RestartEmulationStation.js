@@ -30,9 +30,16 @@ for (let i = 0; i < emuInfo.length; i++) {
 
 // If nothing was running restart Emulation Station.
 if (killOk) {
-    let uiSysInfo = SharedUtils.getJsonFromFile(uiInfoFile);
-    let esInfo = SharedUtils.getEntryForType(uiSysInfo, "EmulationStation");
+	let uiSysInfo = SharedUtils.getJsonFromFile(uiInfoFile);
+	let steamInfo = SharedUtils.getEntryForType(uiSysInfo, "Steam");
+
+    // Don't let Steam keep running if we're using Emulation Station.
+    if (SharedUtils.checkProcessRunning(steamInfo["bin"])) {
+        execSync("taskkill /f /fi \"IMAGENAME eq " + steamInfo["bin"] + "\"");
+    }
+
+	let esInfo = SharedUtils.getEntryForType(uiSysInfo, "EmulationStation");
 
     execSync("taskkill /f /fi \"IMAGENAME eq " + esInfo["bin"] + "\"");
-    execSync("start \"\" \"" + esInfo["location"] + esInfo["bin"] + "\"");
+    execSync("start \"\" \"" + esInfo["location"] + esInfo["bin"] + "\" -bigpicture");
 }
