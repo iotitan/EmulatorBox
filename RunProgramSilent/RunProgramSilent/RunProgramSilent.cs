@@ -24,7 +24,7 @@ namespace RunProgramSilent {
             info.WindowStyle = ProcessWindowStyle.Hidden;
 
             // Apply all provided params after 1 to the program that will be run.
-            for (int i = 1; i < args.Length; i++) info.Arguments += " " + args[i];
+            for (int i = 1; i < args.Length; i++) info.Arguments += " \"" + args[i] + "\"";
 
             Process nodeProcess = new Process();
             nodeProcess.StartInfo = info;
