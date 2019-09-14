@@ -51,6 +51,7 @@ The config files in the repo are setup to work on the following directory struct
   - Configuration files for any of the base software that needs it.
   - Emulators have configs set up for xBox controllers.
   - Emulation Station is configured to work on the directory structure listed above.
+  - Individual config files need to be move to replace the ones installed with each system.
 - ```./ConsolePadApp/```
   - An Android app used with the ```ConsoleUDPResponder``` to perform the same actions as the
     Stream Deck but from your phone or device.
@@ -59,9 +60,6 @@ The config files in the repo are setup to work on the following directory struct
   - The host software that executes commands issued by the ```Console Pad``` app.
   - This should be set to start when Windows starts.
   - **All actions performed by this software assume the directory structure listed above.**
-- ```./EmulationStation_theme/```
-  - A thin version of the stock "simple" theme that ships with Emulation Station (only includes the
-    emulators that are actually used).
 - ```./RunProgramSilent/```
   - A wrapper program that tries to execute programs without showing a main window.
   - This is mainly for polish as it looks better when a emulator starts without numerous windows
