@@ -21,6 +21,8 @@ A keyboard and mouse should not be necessary to operate the device.
 - Windows 10 x64
 - [Emulation Station](https://github.com/Aloshi/EmulationStation/tree/unstable#emulationstation)
   - Graphical, controller-input front-end for emulator systems.
+- [Node.js for windows](https://nodejs.org/en/)
+  - This is responsible for running scripts for the button pad and app.
 - Various emulators:
   - Dolphin
   - Project64
