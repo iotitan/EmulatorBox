@@ -1,8 +1,8 @@
 # Emulator Box
 
 This a computer designed to behave like a typical gaming console; it hooks up to a TV and is
-primarily controlled via USB controller and a small customizable button pad. A keyboard and
-mouse should not be necessary to operate the device.
+primarily controlled via USB controller and a small customizable button pad and/or Android app.
+A keyboard and mouse should not be necessary to operate the device.
 
 ## Hardware
 
