@@ -1,5 +1,7 @@
 /**
- * File: UdpNetworkTask.js
+ * Copyright 2019 Matthew Jones
+ *
+ * File: UdpNetworkTask.java
  * Author: Matt Jones
  * Date: 2019.09.07
  * Desc: An async task that sends a message over UDP and waits for a response.

@@ -1,4 +1,6 @@
 /**
+ * Copyright 2019 Matthew Jones
+ *
  * File: PowerOff.js
  * Author: Matt Jones
  * Date: 2019.08.28

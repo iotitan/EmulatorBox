@@ -1,5 +1,7 @@
 /**
- * File: MainActivity.js
+ * Copyright 2019 Matthew Jones
+ *
+ * File: MainActivity.java
  * Author: Matt Jones
  * Date: 2019.09.04
  * Desc: Main activity for the console controller phone app.

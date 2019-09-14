@@ -1,5 +1,7 @@
 /**
- * File: LongPressButton.js
+ * Copyright 2019 Matthew Jones
+ *
+ * File: LongPressButton.java
  * Author: Matt Jones
  * Date: 2019.09.06
  * Desc: A view that shifts color when pressed and held until the action is performed.
