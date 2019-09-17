@@ -21,16 +21,16 @@ if (!emuInfoFile) {
 /**
  * Asynchronously kill an emulator process by its process name (Windows specific).
  * @param {string} processName The name of the process to attempt to kill.
+ * @param {boolean} force Whether the process should be forced to terminate. This is important
+ *					because some emulators save on exit, forcing can cause saving to fail.
  */
-function killEmulatorProcessNoPID(processName) {
-	// DO NOT USE THE FORCE FLAG ("/f" or "-f"). Some emulators save on app exit, forcing causes
-	// saving to fail.
-    exec("taskkill /fi \"IMAGENAME eq " + processName + "\"");
+function killEmulatorProcessNoPID(processName, force) {
+    exec("taskkill " + (force ? "/f " : "") + "/fi \"IMAGENAME eq " + processName + "\"");
 }
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 
 // Loop over known emulators and kill their processes.
 for (let i = 0; i < emuInfo.length; i++) {
-    killEmulatorProcessNoPID(emuInfo[i]["bin"]);
+    killEmulatorProcessNoPID(emuInfo[i]["bin"], emuInfo[i]["force_kill"]);
 }

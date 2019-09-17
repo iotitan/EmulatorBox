@@ -2,11 +2,13 @@
     {
         "type": "EmulationStation",
         "location": "C:/emulator_box/emulationstation_2.0.1a_win32/",
-        "bin": "emulationstation.exe"
+        "bin": "emulationstation.exe",
+		"force_kill": true
     },
     {
         "type": "Steam",
         "location": "C:/Program Files (x86)/Steam/",
-        "bin": "Steam.exe"
+        "bin": "Steam.exe",
+		"force_kill": true
     }
 ]
