@@ -23,7 +23,9 @@ if (!emuInfoFile) {
  * @param {string} processName The name of the process to attempt to kill.
  */
 function killEmulatorProcessNoPID(processName) {
-    exec("taskkill /f /fi \"IMAGENAME eq " + processName + "\"");
+	// DO NOT USE THE FORCE FLAG ("/f" or "-f"). Some emulators save on app exit, forcing causes
+	// saving to fail.
+    exec("taskkill /fi \"IMAGENAME eq " + processName + "\"");
 }
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
