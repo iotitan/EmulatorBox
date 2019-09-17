@@ -9,7 +9,7 @@
         "type": "N64",
         "location": "C:/emulator_box/emulators/Project64-2.3/",
         "bin": "Project64_custom.exe",
-		"force_kill": true
+		"force_kill": false
     },
     {
         "type": "SNES",
@@ -21,12 +21,12 @@
         "type": "GBA",
         "location": "C:/emulator_box/emulators/VisualBoyAdvance-1.8.0-beta/",
         "bin": "VisualBoyAdvance.exe",
-		"force_kill": true
+		"force_kill": false
     },
     {
         "type": "NES",
         "location": "C:/emulator_box/emulators/fceux-2.2.3/",
         "bin": "fceux.exe",
-		"force_kill": true
+		"force_kill": false
     }
 ]
