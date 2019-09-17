@@ -22,7 +22,7 @@ if (!emuInfoFile) {
  * Asynchronously kill an emulator process by its process name (Windows specific).
  * @param {string} processName The name of the process to attempt to kill.
  * @param {boolean} force Whether the process should be forced to terminate. This is important
- *					because some emulators save on exit, forcing can cause saving to fail.
+ *                  because some emulators save on exit, forcing can cause saving to fail.
  */
 function killEmulatorProcessNoPID(processName, force) {
     exec("taskkill " + (force ? "/f " : "") + "/fi \"IMAGENAME eq " + processName + "\"");
