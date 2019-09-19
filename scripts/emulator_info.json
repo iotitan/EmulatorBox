@@ -1,7 +1,7 @@
 [
     {
         "type": "GC",
-        "location": "C:/Program Files/Dolphin/",
+        "location": "C:/emulator_box/emulators/Dolphin/",
         "bin": "Dolphin.exe",
         "force_kill": true
     },
