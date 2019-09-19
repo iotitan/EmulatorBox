@@ -84,8 +84,8 @@ namespace UpdateConfigAndRun {
          * @param pluggedControllers The list of controller types currently plugged in.
          */
         private static void writeProject64Config(ControllerType[] pluggedControllers) {
-            String configTemplate = BASE_PATH + "/configs/Project64/Config/NRage.ini";
-            String configPath = BASE_PATH + "/TEMP.ini";
+            String configTemplate = BASE_PATH + "/EmulatorBox/configs/Project64/Config/NRage.ini";
+            String configPath = BASE_PATH + "/emulators/Project64-2.3/Config/NRage.ini";
 
             if (File.Exists(configPath)) File.Delete(configPath);
             StreamReader reader = new StreamReader(configTemplate);
