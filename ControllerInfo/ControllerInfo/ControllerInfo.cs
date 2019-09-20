@@ -38,7 +38,7 @@ namespace UpdateConfigAndRun {
                 Console.WriteLine("        \"buttons\": " + joystickCap.ButtonCount);
                 Console.Write("    }");
                 Console.WriteLine(
-                        (i + 1 >= MAX_CONTROLLERS && isValidController(i + 1)) ? "," : "");
+                        (i + 1 < MAX_CONTROLLERS && isValidController(i + 1)) ? "," : "");
             }
             Console.WriteLine("]");
         }
