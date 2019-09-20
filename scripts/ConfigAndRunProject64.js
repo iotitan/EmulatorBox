@@ -50,6 +50,6 @@ for (let i = 0; i < templateLines.length; i++) {
 fs.close(targetHandle);
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
-let p64Info = SharedUtils.getEntryForType("N64");
+let p64Info = SharedUtils.getEntryForType(emuInfo, "N64");
 
 execSync(p64Info["location"] + p64Info["bin"] + " " + romPath);
