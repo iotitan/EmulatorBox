@@ -12,9 +12,9 @@ const fs = require("fs");
 const process = require('process');
 const SharedUtils = require('./SharedUtils');
 
-let emuPath = process.argv[2];
+let emuInfoFile = process.argv[2];
 let romPath = process.argv[3];
-if (!romPath || !emuPath) {
+if (!romPath || !emuInfoFile) {
     console.log("usage: ");
     console.log("    node.exe ./ConfigAndRunProject64.js <emu_info_file> <rom_path>");
     return;
@@ -30,7 +30,7 @@ let controllerCount = controllerJson.length;
 // Remove the target file if it exists.
 if (fs.existsSync(configTarget)) fs.unlinkSync(configTarget);
 
-let templateLines = fs.readFileSync(configTemplate).split("\n");
+let templateLines = fs.readFileSync(configTemplate).toString("utf8").split("\n");
 let targetHandle = fs.openSync(configTarget, "w+");
 
 let curControllerIndex = 0;
@@ -47,7 +47,7 @@ for (let i = 0; i < templateLines.length; i++) {
     }
 
 }
-fs.close(targetHandle);
+fs.closeSync(targetHandle);
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 let p64Info = SharedUtils.getEntryForType(emuInfo, "N64");
