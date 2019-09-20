@@ -52,4 +52,4 @@ fs.closeSync(targetHandle);
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 let p64Info = SharedUtils.getEntryForType(emuInfo, "N64");
 
-execSync(p64Info["location"] + p64Info["bin"] + " " + romPath);
+execSync(p64Info["location"] + p64Info["bin"] + " \"" + romPath + "\"");
