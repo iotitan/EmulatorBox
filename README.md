@@ -62,6 +62,13 @@ The config files in the repo are setup to work on the following directory struct
   - The host software that executes commands issued by the ```Console Pad``` app.
   - This should be set to start when Windows starts.
   - **All actions performed by this software assume the directory structure listed above.**
+- ```./ControllerInfo/```
+  - A commandline utility to read out information about connected controllers in JSON format to
+    std::out.
+  - This currently uses the OpenTK library for controller input which is an absolute dumpster fire;
+    axis and button counts are mangled and sometimes connection is flaky. A prototype using GLFW in
+    C++ is in the pipe, but I was also like it to detect and output DirectInput IDs which are
+    obsolete but old controllers still use.
 - ```./RunProgramSilent/```
   - A wrapper program that tries to execute programs without showing a main window.
   - This is mainly for polish as it looks better when a emulator starts without numerous windows
@@ -69,6 +76,7 @@ The config files in the repo are setup to work on the following directory struct
   - Use: ```./RunProgramSilent.exe <PROGRAM_PATH> [<PARAM_1>] [<PARAM_2>] [...]```
 - ```./scripts/```
   - Node JS scripts to perform various functionality (mostly for the Stream Deck).
+  - Prebuilt executables for tools that need them.
 - ```./system_wallpaper.png```
   - A basic wallpaper to show on system startup and desktop while things are loading.
 
