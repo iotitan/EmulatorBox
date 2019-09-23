@@ -29,7 +29,7 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
     private static final int LONG_PRESS_DURATION_MS = 1500;
 
     /** The amount of acceptable motion in DP to continue a long-press. */
-    private static final int SCROLL_SLOP_DP = 20;
+    private static final int SCROLL_SLOP_DP = 25;
 
     /** The conversion multiple from DP to PX. */
     private final float mDpToPx;
