@@ -35,7 +35,8 @@ namespace UpdateConfigAndRun {
                     Console.WriteLine("\"other\",");
                 }
                 Console.WriteLine("        \"axes\": " + joystickCap.AxisCount + ",");
-                Console.WriteLine("        \"buttons\": " + joystickCap.ButtonCount);
+                Console.WriteLine("        \"buttons\": " + joystickCap.ButtonCount + ",");
+                Console.WriteLine("        \"guid\": " + Joystick.GetGuid(i));
                 Console.Write("    }");
                 Console.WriteLine(
                         (i + 1 < MAX_CONTROLLERS && isValidController(i + 1)) ? "," : "");

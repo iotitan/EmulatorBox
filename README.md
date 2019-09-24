@@ -92,8 +92,9 @@ startup directory for windows.
   - ```
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
-        C:/emulator_box/EmulatorBox/scripts/KillEmulators.js
+        C:/emulator_box/EmulatorBox/scripts/KillGames.js
         C:/emulator_box/EmulatorBox/scripts/emulator_info.json
+        C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
     ```
 - Button 2: Emulators
   - Start or restart Emulation Station.

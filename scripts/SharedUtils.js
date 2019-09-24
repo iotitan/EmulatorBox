@@ -59,5 +59,39 @@ module.exports = {
         // found, do nothing. Remove the quotes from the output and check the name if it's
         // there.
         return outSplit.length >= 1 && outSplit[0].substr(1, outSplit[0].length - 2) == processName;
+    },
+
+    /**
+     * Get the process ID of the named process.
+     * @param {string} processName The name of the process to find the ID for.
+     * @return {string} The PID of the provided process.
+     */
+    getProcessId(processName) {
+        let out = execSync("tasklist /nh /fo \"csv\" /fi \"IMAGENAME eq " + processName + "\"");
+        let outSplit = out.toString().split(",");
+
+        // Remove the quotes from the output at index 1 (the second value in the CSV).
+        return outSplit[1].substr(1, outSplit[1].length - 2);
+    },
+
+    /**
+     * Get the child processes of the provided parent.
+     * @param {string} parentId The ID of the parent whose child ID should be retrieved.
+     * @return {string[]} A list of child IDs.
+     */
+    getProcessesFromParentId(parentId) {
+        let out = execSync("wmic process where \"ParentProcessId=" + parentId
+                + "\" get ProcessId /format:csv");
+        let lineSplit = out.toString().split("\n");
+        let childIds = new Array();
+        for (let i = 0; i < lineSplit.length; i++) {
+            let items = lineSplit[i].split(",");
+            // If the split doesn't have at least two entries, continue. Expecting "MachineName,ID".
+            if (items.length < 2) continue;
+            // Try to parse the number to make sure it's an ID.
+            if (isNaN(parseInt(items[1]))) continue;
+            childIds.push(items[1]);
+        }
+        return childIds;
     }
 }

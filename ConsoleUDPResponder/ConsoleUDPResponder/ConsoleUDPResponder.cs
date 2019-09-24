@@ -123,8 +123,9 @@ namespace ConsoleUDPResponder {
             String decodedAction = Encoding.UTF8.GetString(Convert.FromBase64String(parts[3]));
             if (ACTION_HOME.Equals(decodedAction)) {
                 runScript("node.exe "
-                    + "C:/emulator_box/EmulatorBox/scripts/KillEmulators.js "
-                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json");
+                    + "C:/emulator_box/EmulatorBox/scripts/KillGames.js "
+                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
+                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
             } else if (ACTION_EMULATION_STATION.Equals(decodedAction)) {
                 runScript("node.exe "
                     + "C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js "
