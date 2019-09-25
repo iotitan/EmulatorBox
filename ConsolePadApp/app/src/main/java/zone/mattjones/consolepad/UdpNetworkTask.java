@@ -45,11 +45,11 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
     private static final int DEFAULT_PORT = 19002;
 
     // Different actions this host knows how to handle.
-    public static final String ACTION_INFO = "Info";
-    public static final String ACTION_POWER_OFF = "PowerOff";
-    public static final String ACTION_EMULATION_STATION = "RestartEmulationStation";
-    public static final String ACTION_STEAM = "RestartSteamBP";
-    public static final String ACTION_HOME = "KillEmulators";
+    public static final String ACTION_INFO = "INFO";
+    public static final String ACTION_POWER_OFF = "POWER_OFF";
+    public static final String ACTION_EMULATION_STATION = "RESTART_EMULATION_STATION";
+    public static final String ACTION_STEAM = "RESTART_STEAM_BP";
+    public static final String ACTION_HOME = "HOME";
 
     public static final String RESPONSE_OK = "OK";
 
@@ -57,7 +57,7 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
     public static final int MAX_PACKET_SIZE = 4096;
 
     /** The allowed time to wait for a message from the console. */
-    public static final long SOCKET_TIMEOUT_MS = 500;
+    public static final long SOCKET_TIMEOUT_MS = 750;
 
     /** The allowed latency for a message to be considered valid by the system. */
     public static final long VALID_MESSAGE_LATENCY_MS = 3000;

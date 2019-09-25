@@ -29,11 +29,11 @@ namespace ConsoleUDPResponder {
         private static readonly int DEFAULT_PORT = 19002;
 
         // Different actions this host knows how to handle.
-        private static readonly String ACTION_INFO = "Info";
-        private static readonly String ACTION_POWER_OFF = "PowerOff";
-        private static readonly String ACTION_EMULATION_STATION = "RestartEmulationStation";
-        private static readonly String ACTION_STEAM = "RestartSteamBP";
-        private static readonly String ACTION_HOME = "KillEmulators";
+        private static readonly String ACTION_INFO = "INFO";
+        private static readonly String ACTION_POWER_OFF = "POWER_OFF";
+        private static readonly String ACTION_EMULATION_STATION = "RESTART_EMULATION_STATION";
+        private static readonly String ACTION_STEAM = "RESTART_STEAM_BP";
+        private static readonly String ACTION_HOME = "HOME";
 
         private static readonly String RESPONSE_OK = "OK";
 
