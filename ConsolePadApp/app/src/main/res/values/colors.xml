@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#983ff3</color>
-    <color name="colorPrimaryDark">#502979</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="icon_color">#bfbfbf</color>
-    <color name="connection_status_none_color">#bfbfbf</color>
-    <color name="list_divider_color">#dfdfdf</color>
+    <color name="purple_primary">#983ff3</color>
+    <color name="purple_secondary">#502979</color>
+    <color name="accent">#D81B60</color>
+    <color name="white">#ffffff</color>
+    <color name="invisible_grey">#eaeaea</color>
+    <color name="light_grey">#bfbfbf</color>
+    <color name="medium_grey">#8f8f8f</color>
+    <color name="dark_grey">#6f6f6f</color>
+
+    <color name="icon_color_default">@color/medium_grey</color>
+    <color name="icon_color_selected">@color/white</color>
+
+    <color name="button_text_default">@color/dark_grey</color>
+    <color name="button_text_selected">@color/white</color>
+
+    <color name="connection_status_none_color">@color/light_grey</color>
+
+    <color name="list_divider_color">@color/invisible_grey</color>
 </resources>

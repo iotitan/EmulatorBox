@@ -13,11 +13,13 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,11 +69,17 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
     /** The target background color when the button is being pressed. */
     private final int mTargetBackgroundColor;
 
-    /** The target test color when the button is being pressed. */
+    /** The target text color when the button is being pressed. */
     private final int mTargetTextColor;
+
+    /** The target icon color when the button is being pressed. */
+    private final int mTargetIconColor;
 
     /** The view containing the text for this button. */
     private TextView mLabelView;
+
+    /** The view containing the icon for this button. */
+    private ImageView mIconView;
 
     /**
      * The animator responsible for transitioning the background color and eventually triggering
@@ -85,15 +93,24 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
     /** The initial color of the text for this button. */
     private int mStartTextColor;
 
+    /** The initial color of the icon for this button. */
+    private int mStartIconColor;
+
     /** The action triggered after the button is held for long enough. */
     private OnClickListener mClickListener;
 
     /** Default constructor for use in XML. */
     public LongPressButton(Context context, AttributeSet atts) {
         super(context, atts);
-        mTargetBackgroundColor = getContext().getResources().getColor(R.color.colorPrimary);
-        mTargetTextColor = getContext().getResources().getColor(R.color.icon_color);
-        mDpToPx = context.getResources().getDisplayMetrics().density;
+        mTargetBackgroundColor = getResources().getColor(R.color.purple_primary);
+        mTargetTextColor = getResources().getColor(R.color.button_text_selected);
+        mTargetIconColor = getResources().getColor(R.color.icon_color_selected);
+
+        mStartBackgroundColor = Color.TRANSPARENT;
+        mStartTextColor= getResources().getColor(R.color.medium_grey);
+        mStartIconColor = getResources().getColor(R.color.medium_grey);
+
+        mDpToPx = getResources().getDisplayMetrics().density;
         mGestureDetector = new GestureDetector(this);
     }
 
@@ -101,13 +118,19 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
     protected void onFinishInflate() {
         super.onFinishInflate();
         mLabelView = (TextView) findViewById(R.id.button_label);
+        mIconView = (ImageView) findViewById(R.id.button_icon);
+        mStartIconColor = getResources().getColor(R.color.icon_color_default);
 
         mAnimatorUpdateListener = (animator) -> {
             float v = (float) animator.getAnimatedValue();
             interpolateColor(mStartBackgroundColor, mTargetBackgroundColor, v);
             setBackgroundColor(interpolateColor(mStartBackgroundColor, mTargetBackgroundColor, v));
             mLabelView.setTextColor(interpolateColor(mStartTextColor, mTargetTextColor, v));
+
+            setIconColor(interpolateColor(mStartIconColor, mTargetIconColor, v));
         };
+
+        resetColors();
     }
 
     @Override
@@ -137,8 +160,22 @@ public class LongPressButton extends LinearLayout implements GestureDetector.OnG
         mColorAnimator.removeAllListeners();
         mColorAnimator.cancel();
         mColorAnimator = null;
+        resetColors();
+    }
+
+    /** Reset the background, text, and icon colors. */
+    private void resetColors() {
         setBackgroundColor(mStartBackgroundColor);
         mLabelView.setTextColor(mStartTextColor);
+        setIconColor(mStartIconColor);
+    }
+
+    /**
+     * Set the color of the icon.
+     * @param color The color to set the icon to. The original colors are overridden by this value.
+     */
+    private void setIconColor(int color) {
+        mIconView.setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     @Override

@@ -155,7 +155,7 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
         } else {
             String base = getResources().getString(R.string.connection_status_connected);
             status.setText(base + " " + mConnectedConsoleName);
-            status.setTextColor(getResources().getColor(R.color.colorPrimary, null));
+            status.setTextColor(getResources().getColor(R.color.purple_primary, null));
         }
     }
 }
