@@ -23,6 +23,7 @@ A keyboard and mouse should not be necessary to operate the device.
   - Graphical, controller-input front-end for emulator systems.
 - [Node.js for windows](https://nodejs.org/en/)
   - This is responsible for running scripts for the button pad and app.
+- [Steam](https://store.steampowered.com/about/)
 - Various emulators:
   - Dolphin
   - Project64
@@ -124,7 +125,7 @@ startup directory for windows.
         C:/emulator_box/EmulatorBox/scripts/PowerOff.js
     ```
 
-#### Firewall (optional)
+#### Firewall
 The following should have all outbound requests blocked:
 - **Stream Deck updater**: %ProgramFiles%\Elgato\StreamDeck\StreamDeck.exe
   - This is to prevent the UI from popping up a notification for updating the software.
