@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -92,9 +91,8 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
                 View button = getLayoutInflater().inflate(R.layout.button, null);
                 ConsoleButtonInfo item = actionItems.get(i);
 
-                ((ImageView) button.findViewById(R.id.button_icon)).setImageDrawable(
-                        getDrawable(item.imageId));
-                ((TextView) button.findViewById(R.id.button_label)).setText(item.labelId);
+                ((LongPressButton) button).setButtonText(item.labelId);
+                ((LongPressButton) button).setButtonIcon(item.imageId);
                 button.setOnClickListener((v) -> handleButtonClick(item));
 
                 return button;

@@ -1,25 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <zone.mattjones.consolepad.LongPressButton
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="start|center_vertical"
-    android:padding="@dimen/button_padding">
+    android:gravity="start|center_vertical">
 
-    <ImageView
-        android:id="@+id/button_icon"
-        android:layout_width="@dimen/button_icon_height"
-        android:layout_height="@dimen/button_icon_height" />
 
-    <TextView
-        android:id="@+id/button_label"
-        android:layout_width="wrap_content"
+    <!-- The view group that shows in the button's normal state. -->
+    <LinearLayout
+        android:id="@+id/inactive_button"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:layout_marginStart="@dimen/button_padding"
-        android:textSize="@dimen/button_font_size"
-        android:textColor="@color/button_text_default"
-        android:text="hello"/>
+        android:padding="@dimen/button_padding"
+        android:gravity="start|center_vertical">
+
+        <ImageView
+            android:id="@+id/button_icon"
+            android:layout_width="@dimen/button_icon_height"
+            android:layout_height="@dimen/button_icon_height" />
+
+        <TextView
+            android:id="@+id/button_label"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/button_padding"
+            android:textSize="@dimen/button_font_size"
+            android:textColor="@color/button_text_default"
+            android:text="hello"/>
+
+    </LinearLayout>
+
+    <!-- The view group that shows on top of the inactive view when in the pressed state. -->
+    <LinearLayout
+        android:id="@+id/active_button"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/button_padding"
+        android:gravity="start|center_vertical"
+        android:background="@color/purple_primary"
+        android:clipChildren="true"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/button_icon_active"
+            android:layout_width="@dimen/button_icon_height"
+            android:layout_height="@dimen/button_icon_height" />
+
+        <TextView
+            android:id="@+id/button_label_active"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/button_padding"
+            android:textSize="@dimen/button_font_size"
+            android:textColor="@color/button_text_selected"
+            android:text="hello"/>
+
+    </LinearLayout>
 
 </zone.mattjones.consolepad.LongPressButton>
