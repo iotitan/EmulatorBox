@@ -33,11 +33,17 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
     /** The amount of time the button needs to be held before triggering the action. */
     private static final int LONG_PRESS_DURATION_MS = 1500;
 
+    /**
+     * The amount of time before a sufficiently large scroll needs to happen before the motion is
+     * considered a long-press.
+     */
+    private static final int TIME_TO_INTERCEPT_LONG_PRESS = 250;
+
     /** The amount of the button should show a confirmation (darker color) before cleanup. */
     private static final int CONFIRM_DURATION_MS = 1500;
 
     /** The amount of acceptable motion in DP to continue a long-press. */
-    private static final int SCROLL_SLOP_DP = 20;
+    private static final int SCROLL_SLOP_DP = 10;
 
     /** The conversion multiple from DP to PX. */
     private final float mDpToPx;
@@ -53,6 +59,7 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
         @Override
         public void onAnimationStart(Animator animator) {
             mActiveGroup.setVisibility(View.VISIBLE);
+            setLongClickable(true);
         }
 
         @Override
@@ -103,6 +110,9 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
 
     /** Wait to reset the background color after a confirmed, selection. */
     private Runnable mConfirmRunnable;
+
+    /** The time of the last down event. */
+    private long mDownEventTime;
 
     /** Default constructor for use in XML. */
     public LongPressButton(Context context, AttributeSet atts) {
@@ -229,8 +239,13 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
         return mGestureDetector.onTouchEvent(event);
     }
 
+    /**
+     * Handle incoming motion events to this view.
+     * @param event The event to handle.
+     */
     private void handleMotionEvent(MotionEvent event) {
         if (event.getActionMasked() == MotionEvent.ACTION_DOWN && mScrollAnimator == null) {
+            mDownEventTime = System.currentTimeMillis();
             mScrollAnimator = ValueAnimator.ofFloat(0, 1);
             mScrollAnimator.setDuration(LONG_PRESS_DURATION_MS);
             mScrollAnimator.addListener(mAnimatorListener);
@@ -238,9 +253,26 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
             mScrollAnimator.setInterpolator(SHARED_INTERPOLATOR);
             mScrollAnimator.start();
         } else if (event.getActionMasked() == MotionEvent.ACTION_UP
-                || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
+                || event.getActionMasked() == MotionEvent.ACTION_CANCEL
+                ||!isTouchInViewYArea(event)) {
+            getParent().requestDisallowInterceptTouchEvent(false);
             cleanupAnimation();
         }
+
+        if (System.currentTimeMillis() - mDownEventTime > TIME_TO_INTERCEPT_LONG_PRESS) {
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
+    }
+
+    /**
+     * Test that a touch event is in the Y area of the view.
+     * @param event The event to test.
+     * @return Whether the event is in the view's Y bounds.
+     */
+    private boolean isTouchInViewYArea(MotionEvent event) {
+        float yRelative = event.getY(0) + getTop();
+        android.util.Log.w("mdjones", yRelative + " " + getTop() + " " + getBottom());
+        return yRelative > getTop() && yRelative < getBottom();
     }
 
     @Override
