@@ -108,8 +108,8 @@ module.exports = {
      *                         the system.
      */
     killEmulators(emuJson) {
-        for (let i = 0; i < emuInfo.length; i++) {
-            killEmulatorByName(emuInfo[i]["bin"], emuInfo[i]["force_kill"]);
+        for (let i = 0; i < emuJson.length; i++) {
+            this.killProcessByName(emuJson[i]["bin"], emuJson[i]["force_kill"]);
         }
     },
 
@@ -141,7 +141,6 @@ module.exports = {
     addTrailingSlashIfNeeded(path) {
         if (!path) return "/";
         let lastChar = path.charAt(path.length - 1);
-        console.log("last char " + lastChar);
         if (lastChar == "/" || lastChar == "\\") return path;
         return path + "/";
     }

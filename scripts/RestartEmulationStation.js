@@ -35,7 +35,6 @@ for (let i = 0; i < emuInfo.length; i++) {
     }
 }
 
-console.log(emuInfoFile);
 // If nothing was running restart Emulation Station.
 if (killOk) {
 	let uiSysInfo = SharedUtils.getJsonFromFile(uiInfoFile);

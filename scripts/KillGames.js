@@ -18,8 +18,8 @@ if (!configDir) {
 }
 
 configDir = SharedUtils.addTrailingSlashIfNeeded(configDir);
-let emuInfoFile = configDir + "/" + SharedUtils.EMULATOR_INFO_FILE_NAME;
-let uiInfoFile = configDir + "/" + SharedUtils.UI_SYSTEM_INFO_FILE_NAME;
+let emuInfoFile = configDir + SharedUtils.EMULATOR_INFO_FILE_NAME;
+let uiInfoFile = configDir + SharedUtils.UI_SYSTEM_INFO_FILE_NAME;
 
 SharedUtils.killEmulators(SharedUtils.getJsonFromFile(emuInfoFile));
 
