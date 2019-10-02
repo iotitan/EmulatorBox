@@ -12,10 +12,10 @@ const fs = require('fs');
 
 module.exports = {
     /** The name of the file containing the information about the different UI systems. */
-    UI_SYSTEM_INFO_FILE_NAME = "ui_system_info.json",
+    UI_SYSTEM_INFO_FILE_NAME: "ui_system_info.json",
 
     /** The name of the file containing the information about the emulators. */
-    EMULATOR_INFO_FILE_NAME = "emulator_info.json",
+    EMULATOR_INFO_FILE_NAME: "emulator_info.json",
 
     /**
      * @param {string} fileName The name of the file that contains JSON in the format described
@@ -141,6 +141,7 @@ module.exports = {
     addTrailingSlashIfNeeded(path) {
         if (!path) return "/";
         let lastChar = path.charAt(path.length - 1);
+        console.log("last char " + lastChar);
         if (lastChar == "/" || lastChar == "\\") return path;
         return path + "/";
     }

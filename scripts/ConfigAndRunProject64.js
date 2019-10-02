@@ -21,7 +21,7 @@ if (!romPath || !configDir) {
 }
 
 configDir = SharedUtils.addTrailingSlashIfNeeded(configDir);
-let emuInfoFile = configDir + "/" + SharedUtils.EMULATOR_INFO_FILE_NAME;
+let emuInfoFile = configDir + SharedUtils.EMULATOR_INFO_FILE_NAME;
 
 let basePath = "C:/emulator_box";
 let configTemplate = basePath + "/EmulatorBox/configs/Project64/Config/NRage.ini";

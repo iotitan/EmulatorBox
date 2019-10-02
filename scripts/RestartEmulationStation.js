@@ -21,8 +21,8 @@ if (!configDir) {
 }
 
 configDir = SharedUtils.addTrailingSlashIfNeeded(configDir);
-let emuInfoFile = configDir + "/" + SharedUtils.EMULATOR_INFO_FILE_NAME;
-let uiInfoFile = configDir + "/" + SharedUtils.UI_SYSTEM_INFO_FILE_NAME;
+let emuInfoFile = configDir + SharedUtils.EMULATOR_INFO_FILE_NAME;
+let uiInfoFile = configDir + SharedUtils.UI_SYSTEM_INFO_FILE_NAME;
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 let killOk = true;
@@ -35,6 +35,7 @@ for (let i = 0; i < emuInfo.length; i++) {
     }
 }
 
+console.log(emuInfoFile);
 // If nothing was running restart Emulation Station.
 if (killOk) {
 	let uiSysInfo = SharedUtils.getJsonFromFile(uiInfoFile);
