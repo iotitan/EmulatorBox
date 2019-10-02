@@ -11,13 +11,16 @@ const {execSync} = require('child_process');
 const process = require('process');
 const SharedUtils = require('./SharedUtils');
 
-let emuInfoFile = process.argv[2];
-let uiInfoFile = process.argv[3];
-if (!emuInfoFile || !uiInfoFile) {
+let configDir = process.argv[2];
+if (!configDir) {
     console.log("usage: ");
-    console.log("    node.exe ./RestartSteamBP.js <emu_info_file> <ui_sys_info_file>");
+    console.log("    node.exe ./RestartSteamBP.js <config_dir>");
     return;
 }
+
+configDir = SharedUtils.addTrailingSlashIfNeeded(configDir);
+let emuInfoFile = configDir + "/" + SharedUtils.EMULATOR_INFO_FILE_NAME;
+let uiInfoFile = configDir + "/" + SharedUtils.UI_SYSTEM_INFO_FILE_NAME;
 
 let emuInfo = SharedUtils.getJsonFromFile(emuInfoFile);
 let killOk = true;

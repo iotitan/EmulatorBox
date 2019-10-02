@@ -124,21 +124,19 @@ namespace ConsoleUDPResponder {
             if (ACTION_HOME.Equals(decodedAction)) {
                 runScript("node.exe "
                     + "C:/emulator_box/EmulatorBox/scripts/KillGames.js "
-                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
-                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
+                    + "C:/emulator_box/EmulatorBox/configs");
             } else if (ACTION_EMULATION_STATION.Equals(decodedAction)) {
                 runScript("node.exe "
                     + "C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js "
-                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
-                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
+                    + "C:/emulator_box/EmulatorBox/configs");
             } else if (ACTION_STEAM.Equals(decodedAction)) {
                 runScript("node.exe "
                     + "C:/emulator_box/EmulatorBox/scripts/RestartSteamBP.js "
-                    + "C:/emulator_box/EmulatorBox/scripts/emulator_info.json "
-                    + "C:/emulator_box/EmulatorBox/scripts/ui_system_info.json");
+                    + "C:/emulator_box/EmulatorBox/configs");
             } else if (ACTION_POWER_OFF.Equals(decodedAction)) {
                 runScript("node.exe "
-                    + "C:/emulator_box/EmulatorBox/scripts/PowerOff.js");
+                    + "C:/emulator_box/EmulatorBox/scripts/PowerOff.js "
+                    + "C:/emulator_box/EmulatorBox/configs");
             } else if (ACTION_INFO.Equals(decodedAction)) {
                 // Intentionally do nothing for this command.
             }

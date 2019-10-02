@@ -7,10 +7,16 @@
  * Desc: Shared utility functions.
  */
 
-const {execSync} = require('child_process');
+const {exec, execSync} = require('child_process');
 const fs = require('fs');
 
 module.exports = {
+    /** The name of the file containing the information about the different UI systems. */
+    UI_SYSTEM_INFO_FILE_NAME = "ui_system_info.json",
+
+    /** The name of the file containing the information about the emulators. */
+    EMULATOR_INFO_FILE_NAME = "emulator_info.json",
+
     /**
      * @param {string} fileName The name of the file that contains JSON in the format described
      *                          below.
@@ -20,6 +26,7 @@ module.exports = {
      *              "type": <STRING>,
      *              "location": <STRING>
      *              "bin": <STRING>
+     *              "force_kill": <BOOLEAN>
      *          }
      *          ...
      *      ]
@@ -93,5 +100,48 @@ module.exports = {
             childIds.push(items[1]);
         }
         return childIds;
+    },
+
+    /**
+     * Close all the emulators currently running on the system.
+     * @param {object} emuJson A JSON object containing all the information about the emulators on
+     *                         the system.
+     */
+    killEmulators(emuJson) {
+        for (let i = 0; i < emuInfo.length; i++) {
+            killEmulatorByName(emuInfo[i]["bin"], emuInfo[i]["force_kill"]);
+        }
+    },
+
+    /**
+     * Asynchronously kill a process by its process name.
+     * @param {string} processName The name of the process to attempt to kill.
+     * @param {boolean} force Whether the process should be forced to terminate. This is important
+     *                  because some emulators save on exit, forcing can cause saving to fail.
+     */
+    killProcessByName(processName, force) {
+        exec("taskkill " + (force ? "/f " : "") + "/fi \"IMAGENAME eq " + processName + "\"");
+    },
+
+    /**
+     * Kill a process given its ID.
+     * @param {string} pid The process ID to kill.
+     * @param {boolean} force Whether the process should be forced to terminate. This is important
+     *                  because some emulators save on exit, forcing can cause saving to fail.
+     */
+    killProcessByPID(pid, force) {
+        exec("taskkill " + (force ? "/f " : "") + "/fi \"PID eq " + pid + "\"");
+    },
+
+    /**
+     * Given a path, add a trailing slash if there isn't one.
+     * @param {string} path The path to check.
+     * @return {string} The path with a slash at the end if there wasn't one.
+     */
+    addTrailingSlashIfNeeded(path) {
+        if (!path) return "/";
+        let lastChar = path.charAt(path.length - 1);
+        if (lastChar == "/" || lastChar == "\\") return path;
+        return path + "/";
     }
 }

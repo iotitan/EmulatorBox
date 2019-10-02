@@ -12,13 +12,16 @@ const fs = require("fs");
 const process = require('process');
 const SharedUtils = require('./SharedUtils');
 
-let emuInfoFile = process.argv[2];
+let configDir = process.argv[2];
 let romPath = process.argv[3];
-if (!romPath || !emuInfoFile) {
+if (!romPath || !configDir) {
     console.log("usage: ");
-    console.log("    node.exe ./ConfigAndRunProject64.js <emu_info_file> <rom_path>");
+    console.log("    node.exe ./ConfigAndRunProject64.js <config_dir> <rom_path>");
     return;
 }
+
+configDir = SharedUtils.addTrailingSlashIfNeeded(configDir);
+let emuInfoFile = configDir + "/" + SharedUtils.EMULATOR_INFO_FILE_NAME;
 
 let basePath = "C:/emulator_box";
 let configTemplate = basePath + "/EmulatorBox/configs/Project64/Config/NRage.ini";

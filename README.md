@@ -94,8 +94,7 @@ startup directory for windows.
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/KillGames.js
-        C:/emulator_box/EmulatorBox/scripts/emulator_info.json
-        C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
+        C:/emulator_box/EmulatorBox/configs
     ```
 - Button 2: Emulators
   - Start or restart Emulation Station.
@@ -104,8 +103,7 @@ startup directory for windows.
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/RestartEmulationStation.js
-        C:/emulator_box/EmulatorBox/scripts/emulator_info.json
-        C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
+        C:/emulator_box/EmulatorBox/configs
     ```
 - Button 3: Steam
   - Start or restart Steam in big-picture mode.
@@ -114,8 +112,7 @@ startup directory for windows.
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/RestartSteamBP.js
-        C:/emulator_box/EmulatorBox/scripts/emulator_info.json
-        C:/emulator_box/EmulatorBox/scripts/ui_system_info.json
+        C:/emulator_box/EmulatorBox/configs
     ```
 - Button 4: Power Off
   - ```./assets/button_icons/zzz.png```
@@ -123,6 +120,7 @@ startup directory for windows.
     C:/emulator_box/EmulatorBox/scripts/RunProgramSilent.exe
         node.exe
         C:/emulator_box/EmulatorBox/scripts/PowerOff.js
+        C:/emulator_box/EmulatorBox/configs
     ```
 
 #### Firewall
