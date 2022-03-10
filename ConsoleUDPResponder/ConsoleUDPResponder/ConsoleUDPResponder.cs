@@ -94,7 +94,6 @@ namespace ConsoleUDPResponder {
             builder.Append(Environment.MachineName);
             builder.Append(SEPARATOR);
             builder.Append(Convert.ToBase64String(Encoding.UTF8.GetBytes(message)));
-            builder.Append(SEPARATOR);
             return Encoding.UTF8.GetBytes(builder.ToString());
         }
 
@@ -114,7 +113,11 @@ namespace ConsoleUDPResponder {
                 long remoteTime = long.Parse(parts[1]);
                 long curTime = getCurrentTimeMs();
                 long timeDiff = getCurrentTimeMs() - long.Parse(parts[1]);
-                if (timeDiff > Math.Abs(VALID_MESSAGE_LATENCY_MS)) return null;
+                if (timeDiff > Math.Abs(VALID_MESSAGE_LATENCY_MS)) {
+                    // TODO(Matt): Time skew causes some real issues here. Use UDP to find the
+                    //             console then switch to TCP.
+                    // return null;
+                }
             } catch (Exception) {
                 // If we failed to parse the time piece of the message, do nothing.
                 return null;

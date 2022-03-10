@@ -7,6 +7,10 @@
     <string name="button_power_off">Power Off</string>
 
     <string name="generic_console_error">Console did not respond!</string>
+    <string name="response_timeout_error">Console took too long to respond!</string>
+    <string name="no_host_error">Console not found!</string>
+    <string name="response_parsing_error">Console sent a bad message!</string>
+    <string name="no_error">No error...</string>
 
     <string name="connection_status_none">Not connected</string>
     <string name="connection_status_connected">Connected to</string>

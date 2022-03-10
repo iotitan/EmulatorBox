@@ -105,6 +105,9 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
      * @param clickedItem The item that was clicked.
      */
     private void handleButtonClick(ConsoleButtonInfo clickedItem) {
+        // TODO(Matt): UDP should only be used to find the console. After that, a TCP connection
+        //             should handle the rest of the communications.
+
         String ip = mConsoleIp == null ? UdpNetworkTask.BROADCAST_IP : mConsoleIp;
         UdpNetworkTask task = new UdpNetworkTask(this, ip, clickedItem.actionId);
         task.execute();
@@ -112,7 +115,7 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
 
     @Override
     public void handleResponse(
-            ArrayList<String> messageParts, boolean error, boolean timedOut, String remoteIp) {
+            ArrayList<String> messageParts, boolean error, int messageId, String remoteIp) {
         mCurrentNetTask = null;
 
         // If there was an error, reset the connection info.
@@ -120,7 +123,7 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
             mConnectedConsoleName = null;
             mConsoleIp = null;
             runOnUiThread(() -> {
-                Toast.makeText(this, R.string.generic_console_error, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, messageId, Toast.LENGTH_LONG).show();
                 updateConnectionStatusUi();
             });
             return;

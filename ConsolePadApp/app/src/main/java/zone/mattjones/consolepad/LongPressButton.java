@@ -271,7 +271,6 @@ public class LongPressButton extends FrameLayout implements GestureDetector.OnGe
      */
     private boolean isTouchInViewYArea(MotionEvent event) {
         float yRelative = event.getY(0) + getTop();
-        android.util.Log.w("mdjones", yRelative + " " + getTop() + " " + getBottom());
         return yRelative > getTop() && yRelative < getBottom();
     }
 

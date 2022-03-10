@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Enumeration;
 
+import androidx.annotation.StringRes;
+
 public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
     /** Interface for handling messages from the console. */
     public interface ResponseHandler {
@@ -34,11 +36,11 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
          * @param messageParts The message response, if available, already split into its different
          *                     components.
          * @param error Whether there was an error with the response.
-         * @param timedOut Whether the socket timed out waiting for a valid response.
+         * @param errorMessageId The string ID for the error message if there was one.
          * @param remoteIp The IP address of the host console.
          */
-        void handleResponse(
-                ArrayList<String> messageParts, boolean error, boolean timedOut, String remoteIp);
+        void handleResponse(ArrayList<String> messageParts, boolean error,
+                            @StringRes int errorMessageId, String remoteIp);
     }
 
     /** The default port to send and receive messages on. */
@@ -57,10 +59,7 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
     public static final int MAX_PACKET_SIZE = 4096;
 
     /** The allowed time to wait for a message from the console. */
-    public static final long SOCKET_TIMEOUT_MS = 750;
-
-    /** The allowed latency for a message to be considered valid by the system. */
-    public static final long VALID_MESSAGE_LATENCY_MS = 3000;
+    public static final long SOCKET_TIMEOUT_MS = 3000;
 
     /** A magic string to identify messages using this simple protocol. */
     public static final String MAGIC_PREFIX = "!!ConsoleMessage:";
@@ -131,9 +130,6 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
             byte[] sharedPacketBuffer = new byte[MAX_PACKET_SIZE];
             DatagramPacket receivedPacket = new DatagramPacket(sharedPacketBuffer, MAX_PACKET_SIZE);
             while (true) {
-                // Clean out the shared buffer.
-                for (int i = 0; i < sharedPacketBuffer.length; i++) sharedPacketBuffer[i] = 0;
-
                 mSocket.receive(receivedPacket);
 
                 // Test if the response is an echo from broadcast.
@@ -143,42 +139,34 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
                 }
                 if (isEcho) continue;
 
+                // Make sure the packet isn't too large, otherwise reject and read the next.
+                if (receivedPacket.getLength() >= MAX_PACKET_SIZE) continue;
 
-                data = new String(receivedPacket.getData(), Charset.forName("UTF8"));
+                data = new String(receivedPacket.getData(), 0, receivedPacket.getLength(),
+                        Charset.forName("UTF8"));
                 String[] dataSections = data.split("\\" + SEPARATOR);
 
                 // Collect messages until one is valid.
                 if (!MAGIC_PREFIX.equals(dataSections[0])) continue;
 
-                // Make sure the message isn't too old.
-                try {
-                    long remoteTime = Long.parseLong(dataSections[1]);
-                    long curTime = System.currentTimeMillis();
-                    long diff = Math.abs(curTime - remoteTime);
-                    if (Math.abs(curTime - remoteTime) > VALID_MESSAGE_LATENCY_MS) continue;
-                } catch (NumberFormatException ne) {
-                    continue;
-                }
-
-                // If all the tests pass, send the data pieces to the handler without the tail of
-                // the packet (all empty info).
-                for (int i = 0; i < dataSections.length - 1; i++) {
+                // If all the tests pass, send the data pieces to the handler.
+                for (int i = 0; i < dataSections.length; i++) {
                     finalResponseComponents.add(dataSections[i]);
                 }
                 break;
             }
 
-            mHandler.handleResponse(finalResponseComponents, false, false,
+            mHandler.handleResponse(finalResponseComponents, false, R.string.no_error,
                     receivedPacket.getAddress().getHostAddress());
 
         } catch (SocketException se) {
-            mHandler.handleResponse(null, true, false, null);
+            mHandler.handleResponse(null, true, R.string.generic_console_error, null);
         } catch (UnknownHostException ue) {
-            mHandler.handleResponse(null, true, false, null);
+            mHandler.handleResponse(null, true, R.string.no_host_error, null);
         } catch (SocketTimeoutException se) {
-            mHandler.handleResponse(null, true, true, null);
+            mHandler.handleResponse(null, true, R.string.response_timeout_error, null);
         } catch (IOException ie) {
-            mHandler.handleResponse(null, true, false, null);
+            mHandler.handleResponse(null, true, R.string.generic_console_error, null);
         }
 
         if (mSocket != null) {
