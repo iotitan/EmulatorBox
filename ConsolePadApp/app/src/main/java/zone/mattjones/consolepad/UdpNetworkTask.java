@@ -59,7 +59,7 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
     public static final int MAX_PACKET_SIZE = 4096;
 
     /** The allowed time to wait for a message from the console. */
-    public static final long SOCKET_TIMEOUT_MS = 3000;
+    public static final long SOCKET_TIMEOUT_MS = 1500;
 
     /** A magic string to identify messages using this simple protocol. */
     public static final String MAGIC_PREFIX = "!!ConsoleMessage:";
@@ -93,8 +93,8 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
      * @return A list of IP addressed in string form.
      * @throws SocketException
      */
-    private static ArrayList<String> getDeviceIps() throws SocketException {
-        ArrayList<String> outList = new ArrayList<>();
+    private static ArrayList<InetAddress> getDeviceIps() throws SocketException {
+        ArrayList<InetAddress> outList = new ArrayList<>();
         Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
         while (interfaces.hasMoreElements()) {
             NetworkInterface curInterface = interfaces.nextElement();
@@ -103,7 +103,7 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
             while (addrs.hasMoreElements()) {
                 InetAddress curAddr = addrs.nextElement();
                 if (curAddr.isLoopbackAddress() && !curAddr.isLinkLocalAddress()) continue;
-                outList.add(curAddr.getHostAddress());
+                outList.add(curAddr);
             }
 
         }
@@ -119,7 +119,7 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
             // First send the message to the console.
             if (BROADCAST_IP.equals(mRemoteIp)) mSocket.setBroadcast(true);
 
-            ArrayList<String> myIps = getDeviceIps();
+            ArrayList<InetAddress> myIps = getDeviceIps();
             byte[] message = buildMessage(mMessage);
             mSocket.send(new DatagramPacket(
                     message, message.length, new InetSocketAddress(mRemoteIp, DEFAULT_PORT)));
@@ -129,14 +129,19 @@ public class UdpNetworkTask extends AsyncTask<String, Integer, String> {
             ArrayList<String> finalResponseComponents = new ArrayList<>();
             byte[] sharedPacketBuffer = new byte[MAX_PACKET_SIZE];
             DatagramPacket receivedPacket = new DatagramPacket(sharedPacketBuffer, MAX_PACKET_SIZE);
+
+            // Accept incoming messages until we see one from the console. One of the messages we
+            // receive will be an echo from this device since we're using UDP.
             while (true) {
                 mSocket.receive(receivedPacket);
 
                 // Test if the response is an echo from broadcast.
                 boolean isEcho = false;
-                for (String ip : myIps) {
-                    isEcho = isEcho || receivedPacket.getAddress().toString().contains(ip);
+                for (InetAddress ip : myIps) {
+                    isEcho = receivedPacket.getAddress().equals(ip);
+                    if (isEcho) break;
                 }
+
                 if (isEcho) continue;
 
                 // Make sure the packet isn't too large, otherwise reject and read the next.
