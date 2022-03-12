@@ -8,7 +8,7 @@
     {
         "type": "Steam",
         "location": "C:/Program Files (x86)/Steam/",
-        "bin": "Steam.exe",
+        "bin": "steam.exe",
         "force_kill": true
     }
 ]
