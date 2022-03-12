@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
 
         // Allow tapping on the status to make an info request and "connect".
         findViewById(R.id.connection_status).setOnClickListener((v) -> {
-            handleButtonClick(new ConsoleButtonInfo(0, 0, UdpNetworkTask.ACTION_INFO));
+            handleButtonClick(UdpNetworkTask.ACTION_INFO);
         });
 
         ListView actionList = (ListView) findViewById(R.id.action_list);
@@ -93,23 +93,34 @@ public class MainActivity extends Activity implements UdpNetworkTask.ResponseHan
 
                 ((LongPressButton) button).setButtonText(item.labelId);
                 ((LongPressButton) button).setButtonIcon(item.imageId);
-                button.setOnClickListener((v) -> handleButtonClick(item));
+                button.setOnClickListener((v) -> handleButtonClick(item.actionId));
 
                 return button;
             }
         });
+
+        // Fake a button press to init the UI.
+        handleButtonClick(UdpNetworkTask.ACTION_INFO);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Fake a button press to update the UI in case the console went offline.
+        handleButtonClick(UdpNetworkTask.ACTION_INFO);
     }
 
     /**
      * Handle button presses from the list of actions.
-     * @param clickedItem The item that was clicked.
+     * @param actionId The action ID of the button that was clicked.
      */
-    private void handleButtonClick(ConsoleButtonInfo clickedItem) {
+    private void handleButtonClick(String actionId) {
         // TODO(Matt): UDP should only be used to find the console. After that, a TCP connection
         //             should handle the rest of the communications.
 
         String ip = mConsoleIp == null ? UdpNetworkTask.BROADCAST_IP : mConsoleIp;
-        UdpNetworkTask task = new UdpNetworkTask(this, ip, clickedItem.actionId);
+        UdpNetworkTask task = new UdpNetworkTask(this, ip, actionId);
         task.execute();
     }
 
