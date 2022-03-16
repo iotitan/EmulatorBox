@@ -36,12 +36,13 @@ namespace UpdateConfigAndRun {
                 }
                 Console.WriteLine("        \"axes\": " + joystickCap.AxisCount + ",");
                 Console.WriteLine("        \"buttons\": " + joystickCap.ButtonCount + ",");
-                Console.WriteLine("        \"guid\": " + Joystick.GetGuid(i));
+                Console.WriteLine("        \"guid\": \"" + Joystick.GetGuid(i)+ "\"");
                 Console.Write("    }");
                 Console.WriteLine(
                         (i + 1 < MAX_CONTROLLERS && isValidController(i + 1)) ? "," : "");
             }
             Console.WriteLine("]");
+            Console.Read();
         }
 
         /**
