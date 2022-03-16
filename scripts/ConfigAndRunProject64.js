@@ -25,7 +25,7 @@ let emuInfoFile = configDir + SharedUtils.EMULATOR_INFO_FILE_NAME;
 
 let basePath = "C:/emulator_box";
 let configTemplate = basePath + "/EmulatorBox/configs/Project64/Config/NRage.ini";
-let configTarget = basePath + "/emulators/Project64-2.3/Config/NRage.ini";
+let configTarget = basePath + "/emulators/Project64/Config/NRage.ini";
 
 let controllerJson = JSON.parse(execSync(basePath + "/EmulatorBox/scripts/ControllerInfo.exe"));
 let controllerCount = controllerJson.length;
