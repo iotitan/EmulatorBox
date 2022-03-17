@@ -46,6 +46,9 @@ The config files in the repo are setup to work on the following directory struct
   - ```./emulators/```
     - Any emulators can be installed here. The local ```es_systems.cfg``` will need to be updated
       for any emulators in this directory.
+  - ```./saves```
+    - For ease of updating emulators, save files should be configured to go here if possible. Each
+      emulator should have a directory here.
 
 ## Project Directories
 - ```./assets/```
