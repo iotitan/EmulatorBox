@@ -10,8 +10,8 @@
 using OpenTK.Input;
 using System;
 
-namespace UpdateConfigAndRun {
-    static class UpdateConfigAndRun {
+namespace EmulatorBox.ControllerInfo {
+    static class ControllerInfo {
         /** The maximum number of controllers that are tested for. */
         private static readonly int MAX_CONTROLLERS = 6;
 
